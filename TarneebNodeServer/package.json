@@ -1,0 +1,13 @@
+{
+	"name":"CardGame",
+	"version":"0.0.0",
+	"main": "server.js",
+	"engines": {
+    "node":"0.10.x",
+    "npm": "1.4.x" 
+    },
+	"author": "Fadi Ghattas",
+	"dependencies":{
+		"socket.io":"*"
+	}
+}

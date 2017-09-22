@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport"
+	content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+<title>Hello World</title>
+<script type="text/javascript" src="cordova.js"></script>
+<style type="text/css">
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: gray;
+	color: white;
+}
+
+</style>
+</head>
+<body onload="onLoad()" onresize="onResize()">
+<script>
+    function onLoad() {
+        if(( /(ipad|iphone|ipod|android|windows phone)/i.test(navigator.userAgent) )) {
+            document.addEventListener('deviceready', initApp, false);
+        } else {
+            initApp();
+        }
+    }
+	var admobid = {};
+	if( /(android)/i.test(navigator.userAgent) ) { 
+		admobid = { // for Android
+			banner: 'ca-app-pub-6869992474017983/9375997553',
+			interstitial: 'ca-app-pub-6869992474017983/9375997553'
+		};
+	} else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+		admobid = { // for iOS
+			banner: 'ca-app-pub-5476494413425286/5268837059',
+			interstitial: 'ca-app-pub-5476494413425286/5268837059'
+		};
+	} else {
+		admobid = { // for Windows Phone
+			banner: 'ca-app-pub-5476494413425286/5129236251',
+			interstitial: 'ca-app-pub-5476494413425286/5129236251'
+		};
+	}
+        
+    function initApp() {
+		if (! AdMob ) { alert( 'admob plugin not ready' ); return; }
+		initAd();
+        // display the banner at startup
+        createSelectedBanner();
+    }
+    function initAd(){
+        var defaultOptions = {
+             bannerId: admobid.banner,
+             interstitialId: admobid.interstitial,
+             adSize: 'FULL_BANNER',
+            // width: integer, // valid when set adSize 'CUSTOM'
+            // height: integer, // valid when set adSize 'CUSTOM'
+            position: AdMob.AD_POSITION.BOTTOM_CENTER,
+            // offsetTopBar: false, // avoid overlapped by status bar, for iOS7+
+            bgColor: 'black', // color name, or '#RRGGBB'
+            // x: integer,		// valid when set position to 0 / POS_XY
+            // y: integer,		// valid when set position to 0 / POS_XY
+            isTesting: false, // set to true, to receiving test ad for testing purpose
+            // autoShow: true // auto show interstitial ad when loaded, set to false if prepare/show
+        };
+        AdMob.setOptions( defaultOptions );
+        registerAdEvents();
+    }
+    // optional, in case respond to events or handle error
+    function registerAdEvents() {
+        
+        // new events, with variable to differentiate: adNetwork, adType, adEvent
+        document.addEventListener('onAdFailLoad', function(data){ 
+        	alert('error: ' + data.error + 
+        			', reason: ' + data.reason + 
+        			', adNetwork:' + data.adNetwork + 
+        			', adType:' + data.adType + 
+        			', adEvent:' + data.adEvent); // adType: 'banner' or 'interstitial'
+        });
+        document.addEventListener('onAdLoaded', function(data){});
+        document.addEventListener('onAdPresent', function(data){});
+        document.addEventListener('onAdLeaveApp', function(data){});
+        document.addEventListener('onAdDismiss', function(data){});
+    }
+    
+    function createSelectedBanner() {
+ 
+        AdMob.createBanner( {adId:admobid.banner, overlap:false, offsetTopBar:false, adSize: 'FULL_BANNER', position:8 } );
+    }
+
+    
+    createSelectedBanner();
+</script>
+	
+</body>
+</html>
